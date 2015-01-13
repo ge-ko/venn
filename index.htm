@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <script src="parser.js"></script>
+<style>
+.err {
+  color: red;
+}
+</style>
+
 <title>Venn Diagram Evaluator</title>
 </head>
 <body>
@@ -11,23 +17,62 @@
 
 <p><textarea id="expr" rows="4" cols="52" oninput="redraw()"></textarea></p>
 
-<p id="print-err"></p>
+<p id="err" class="err">&nbsp;</p>
+
+<table>
+<tr><td>Monotonic:</td><td id="monotonic"></td></tr>
+<tr><td>Affine:</td><td id="affine"></td></tr>
+<tr><td>Self-Dual:</td><td id="self-dual"></td></tr>
+<tr><td>Truth Preserving:</td><td id="truth-preserving"></td></tr>
+<tr><td>Falsity Preserving:</td><td id="falsity-preserving"></td></tr>
+<tr><td>Functionally Complete:</td><td id="functionally-complete"></td></tr>
+</table>
 
 <script>
 function redraw() {
   var expr = document.getElementById("expr").value;
   
   try {
-    var venn = parser.parse(expr).join("")
+    var venn = parser.parse(expr);
     
-	var diagram = document.getElementById("diagram");
+    var monotonic
+        =  venn[0] <= venn[1]
+        && venn[0] <= venn[2]
+        && venn[1] <= venn[3]
+        && venn[2] <= venn[3];
+    
+    var affine = (parseInt(venn[0]) + parseInt(venn[1]) + parseInt(venn[2]) + parseInt(venn[3])) % 2 == 0;
+    
+    var self_dual
+        =  (venn[0] != venn[3])
+        && (venn[1] != venn[2]);
+       
+    var truth_preserving = (venn[3] == 1);
+    
+    var falsity_preserving = (venn[0] == 0);
+    
+    var functionally_complete = !(monotonic || affine || self_dual || truth_preserving || falsity_preserving)
+    
+    venn = venn.join("");
+    
+    // change the image
+    var diagram = document.getElementById("diagram");
     diagram.src = venn + ".png";
     diagram.alt = venn;
 
-	document.getElementById("print-err").innerHTML = "";
+    // clear the error
+    document.getElementById("err").innerHTML = "&nbsp;";
+    
+    // update connectives
+    document.getElementById("monotonic").innerHTML = monotonic;
+    document.getElementById("affine").innerHTML = affine;
+    document.getElementById("self-dual").innerHTML = self_dual;
+    document.getElementById("truth-preserving").innerHTML = truth_preserving;
+    document.getElementById("falsity-preserving").innerHTML = falsity_preserving;
+    document.getElementById("functionally-complete").innerHTML = functionally_complete;
   } catch(err) {
-    // do not change the image until the expression becomes valid
-    document.getElementById("print-err").innerHTML = err.message;
+    // do not change anything until the expression becomes valid, just print the error
+    document.getElementById("err").innerHTML = err.message;
   }
 }
 </script>
