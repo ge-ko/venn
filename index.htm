@@ -4,8 +4,17 @@
 <meta charset="UTF-8">
 <script src="parser.js"></script>
 <style>
+.connectives {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
 .err {
+  font-family: "Lucida Console", Monaco, monospace;
   color: red;
+}
+
+textarea {
+  font-family: "Lucida Console", Monaco, monospace;
 }
 </style>
 
@@ -13,24 +22,49 @@
 </head>
 <body>
 
-<img id="diagram" src="0000.png" alt="0000">
-
-<p><textarea id="expr" rows="4" cols="52" oninput="redraw()"></textarea></p>
-
-<p id="err" class="err">&nbsp;</p>
-
 <table>
-<tr><td>Monotonic:</td><td id="monotonic"></td></tr>
-<tr><td>Affine:</td><td id="affine"></td></tr>
-<tr><td>Self-Dual:</td><td id="self-dual"></td></tr>
-<tr><td>Truth Preserving:</td><td id="truth-preserving"></td></tr>
-<tr><td>Falsity Preserving:</td><td id="falsity-preserving"></td></tr>
-<tr><td>Functionally Complete:</td><td id="functionally-complete"></td></tr>
+<tr>
+
+<td width="400" valign="top">
+<img id="diagram-1" src="0000.png" alt="0000">
+
+<table class="connectives">
+<tr><td>Monotonic:</td><td id="monotonic-1"></td></tr>
+<tr><td>Affine:</td><td id="affine-1"></td></tr>
+<tr><td>Self-Dual:</td><td id="self-dual-1"></td></tr>
+<tr><td>Truth Preserving:</td><td id="truth-preserving-1"></td></tr>
+<tr><td>Falsity Preserving:</td><td id="falsity-preserving-1"></td></tr>
+<tr><td>Functionally Complete:</td><td id="functionally-complete-1"></td></tr>
+</table>
+
+<p><textarea id="expr-1" rows="4" cols="46" oninput="redraw(1)"></textarea></p>
+
+<p id="err-1" class="err"></p>
+</td>
+
+<td width="400" valign="top">
+<img id="diagram-2" src="0000.png" alt="0000">
+
+<table class="connectives">
+<tr><td>Monotonic:</td><td id="monotonic-2"></td></tr>
+<tr><td>Affine:</td><td id="affine-2"></td></tr>
+<tr><td>Self-Dual:</td><td id="self-dual-2"></td></tr>
+<tr><td>Truth Preserving:</td><td id="truth-preserving-2"></td></tr>
+<tr><td>Falsity Preserving:</td><td id="falsity-preserving-2"></td></tr>
+<tr><td>Functionally Complete:</td><td id="functionally-complete-2"></td></tr>
+</table>
+
+<p><textarea id="expr-2" rows="4" cols="46" oninput="redraw(2)"></textarea></p>
+
+<p id="err-2" class="err"></p>
+</td>
+
+</tr>
 </table>
 
 <script>
-function redraw() {
-  var expr = document.getElementById("expr").value;
+function redraw(i) {
+  var expr = document.getElementById("expr-" + i).value;
   
   try {
     var venn = parser.parse(expr);
@@ -56,23 +90,23 @@ function redraw() {
     venn = venn.join("");
     
     // change the image
-    var diagram = document.getElementById("diagram");
+    var diagram = document.getElementById("diagram-" + i);
     diagram.src = venn + ".png";
     diagram.alt = venn;
 
     // clear the error
-    document.getElementById("err").innerHTML = "&nbsp;";
+    document.getElementById("err-" + i).innerHTML = "";
     
     // update connectives
-    document.getElementById("monotonic").innerHTML = monotonic;
-    document.getElementById("affine").innerHTML = affine;
-    document.getElementById("self-dual").innerHTML = self_dual;
-    document.getElementById("truth-preserving").innerHTML = truth_preserving;
-    document.getElementById("falsity-preserving").innerHTML = falsity_preserving;
-    document.getElementById("functionally-complete").innerHTML = functionally_complete;
+    document.getElementById("monotonic-" + i).innerHTML = monotonic;
+    document.getElementById("affine-" + i).innerHTML = affine;
+    document.getElementById("self-dual-" + i).innerHTML = self_dual;
+    document.getElementById("truth-preserving-" + i).innerHTML = truth_preserving;
+    document.getElementById("falsity-preserving-" + i).innerHTML = falsity_preserving;
+    document.getElementById("functionally-complete-" + i).innerHTML = functionally_complete;
   } catch(err) {
     // do not change anything until the expression becomes valid, just print the error
-    document.getElementById("err").innerHTML = err.message;
+    document.getElementById("err-" + i).innerHTML = err.message;
   }
 }
 </script>

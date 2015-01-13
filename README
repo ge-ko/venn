@@ -46,5 +46,4 @@ trailing spaces cause exception
 
 TODO
 ----
-- Add two diagrams side-by-side to allow comparison of expressions (e.g. DeMorgan: not (a and b) <=> not a or not b)
 - Add support for one, three and four circle diagrams 
