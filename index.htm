@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="parser.js"></script>
+<title>Venn Diagram Evaluator</title>
+</head>
+<body>
+
+<img id="diagram" src="0000.png" alt="0000">
+
+<p><textarea id="expr" rows="4" cols="52" oninput="redraw()"></textarea></p>
+
+<p id="print-err"></p>
+
+<script>
+function redraw() {
+  var expr = document.getElementById("expr").value;
+  
+  try {
+    var venn = parser.parse(expr).join("")
+    
+	var diagram = document.getElementById("diagram");
+    diagram.src = venn + ".png";
+    diagram.alt = venn;
+
+	document.getElementById("print-err").innerHTML = "";
+  } catch(err) {
+    // do not change the image until the expression becomes valid
+    document.getElementById("print-err").innerHTML = err.message;
+  }
+}
+</script>
+</body>
+</html>

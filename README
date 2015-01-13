@@ -1,0 +1,50 @@
+# venn
+Venn Diagram Evaluator
+
+Venn Diagrams
+-------------
+http://en.wikipedia.org/wiki/Venn_diagram
+See also: http://en.wikipedia.org/wiki/Truth_function
+
+Images for Venn diagrams can be found at wikipedia:
+	http://commons.wikimedia.org/wiki/File:Venn0000.svg
+	http://commons.wikimedia.org/wiki/File:Venn0001.svg
+	http://commons.wikimedia.org/wiki/File:Venn0010.svg
+	http://commons.wikimedia.org/wiki/File:Venn0011.svg
+	http://commons.wikimedia.org/wiki/File:Venn0100.svg
+	http://commons.wikimedia.org/wiki/File:Venn0101.svg
+	http://commons.wikimedia.org/wiki/File:Venn0110.svg
+	http://commons.wikimedia.org/wiki/File:Venn0111.svg
+	http://commons.wikimedia.org/wiki/File:Venn1000.svg
+	http://commons.wikimedia.org/wiki/File:Venn1001.svg
+	http://commons.wikimedia.org/wiki/File:Venn1010.svg
+	http://commons.wikimedia.org/wiki/File:Venn1011.svg
+	http://commons.wikimedia.org/wiki/File:Venn1100.svg
+	http://commons.wikimedia.org/wiki/File:Venn1101.svg
+	http://commons.wikimedia.org/wiki/File:Venn1110.svg
+	http://commons.wikimedia.org/wiki/File:Venn1111.svg
+
+Grammar & Parser
+----------------
+http://pegjs.org/
+http://pegjs.org/online
+	grammar.txt --> parser.js
+	Parser variable: parser
+	Use results cache: true
+	Optimize: Parsing speed
+
+Used Tools
+----------
+W3 Validator: http://validator.w3.org/check
+Image Convertor: http://image.online-convert.com/convert-to-png
+http://stackoverflow.com/
+http://www.w3schools.com/
+
+Known Issues
+------------
+trailing spaces cause exception
+
+TODO
+----
+- Add two diagrams side-by-side to allow comparison of expressions (e.g. DeMorgan: not (a and b) <=> not a or not b)
+- Add support for one, three and four circle diagrams 

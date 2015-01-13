@@ -1,0 +1,62 @@
+start
+  = expr
+
+_ "whitespace"
+  = [ \r\n\t]*
+
+__ "whitespace"
+  = [ \r\n\t]+
+
+expr
+  = _ left:xor_expr __ "or"i __ right:expr _ {
+      var res = [];
+      for (i=0; i< left.length; ++i) {
+        res[i] = left[i] | right[i]
+      }
+      return res;
+    }
+  / xor_expr
+
+xor_expr
+  = _ left:and_expr __ "xor"i __ right:expr _ {
+      var res = [];
+      for (i=0; i< left.length; ++i) {
+        res[i] = left[i] ^ right[i]
+      }
+      return res;
+    }
+  / and_expr
+
+and_expr
+  = _ left:not_expr __ "and"i __ right:expr _ {
+      var res = [];
+      for (i=0; i< left.length; ++i) {
+        res[i] = left[i] & right[i]
+      }
+      return res;
+    }
+  / not_expr
+
+not_expr
+  = _ "not"i __ expr:not_expr {
+      var res = [];
+      for (i = 0; i < expr.length; ++i) {
+        res[i] = expr[i] ^ 1;
+      }
+      return res;
+  }
+  / primary
+
+primary
+  = constant
+  / four_digit_constant
+  / _ "(" _ expr:expr _ ")" { return expr; }
+
+constant
+  = "A"i { return [0, 1, 0, 1]; }
+  / "B"i { return [0, 0, 1, 1]; }
+  / "true"i { return [1, 1, 1, 1]; }
+  / "false"i { return [0, 0, 0, 0]; }
+
+four_digit_constant "four-digit constant"
+  = b1:[0-1] b2:[0-1] b3:[0-1] b4:[0-1] { return [b1, b2, b3, b4]; }

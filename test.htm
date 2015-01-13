@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="parser.js"></script>
+<style>
+.pass {
+  color: green;
+}
+
+.fail {
+  color: red;
+}
+</style>
+<title>Tests</title>
+</head>
+<body>
+
+<pre>
+<script>
+function assert(test, left, right) {
+  left_res = parser.parse(left).join("");
+  right_res = parser.parse(right).join("");
+  if (left_res != right_res) {
+    document.writeln("<span class='fail'>[FAIL] " + test + ". " + left + " != " + right + "</span>");
+  } else {
+    document.writeln("<span class='pass'>[PASS] " + test + ". " + left + " == " + right + "</span>");
+  }
+}
+
+function assertFalse(test, left, right) {
+  left_res = parser.parse(left).join("");
+  right_res = parser.parse(right).join("");
+  if (left_res == right_res) {
+    document.writeln("<span class='fail'>[FAIL] " + test + ". " + left + " == " + right + "</span>");
+  } else {
+    document.writeln("<span class='pass'>[PASS] " + test + ". " + left + " != " + right + "</span>");
+  }
+}
+
+assert("Associativity of conjunction", "1110 and (1101 and 1011)", "(1110 and 1101) and 1011");
+assert("Associativity of disjunction", "0001 or (0010 or 0100)", "(0001 or 0010) or 0100");
+assert("Associativity of exclusive disjunction", "0001 xor (0010 xor 0100)", "(0001 xor 0010) xor 0100");
+assert("Commutativity of conjunction", "a and b", "b and a");
+assert("Commutativity of disjunction", "a or b", "b or a");
+assert("Commutativity of exclusive disjunction", "a xor b", "b xor a");
+assert("Identity of conjunction", "a and true", "a");
+assert("Identity of disjunction", "a or false", "a");
+assert("Annihgilatgion of conjunction", "a and false", "false");
+assert("Annihgilatgion of disjunction", "a or true", "true");
+assert("Idempotence of conjunction", "a and a", "a");
+assert("Idempotence of disjunction", "a or a", "a");
+assert("Absorption 1", "a and (a or b)", "a");
+assert("Absorption 2", "a or (a and b)", "a");
+assert("Distributivity 1", "1100 or (1101 and 1011)", "(1100 or 1101) and (1100 or 1011)");
+assert("Distributivity 2", "1100 and (1101 or 1011)", "(1100 and 1101) or (1100 and 1011)");
+assert("Complementation 1", "a and not a", "false");
+assert("Complementation 1", "a or not a", "true");
+
+assert("XOR 1", "a xor a", "false");
+assert("XOR 2", "a xor false", "a");
+assert("XOR 3", "a xor true", "not a");
+assert("XOR 4", "a xor not a", "true");
+
+assert("De Morgan: Double negation", "not not a", "a");
+assert("De Morgan: Negation of disjunction", "not (a or b)", "(not a) and (not b)");
+assert("De Morgan: Negation of conjunction", "not (a and b)", "(not a) or (not b)");
+assert("De Morgan: Negation of disjunction", "not (a or b)", "not a and not b");
+assert("De Morgan: Negation of conjunction", "not (a and b)", "not a or not b");
+
+assert("Precedence NOT", "not a and b", "(not a) and b");
+assert("Precedence NOT", "not a or b", "(not a) or b");
+assert("Precedence NOT", "not a xor b", "(not a) xor b");
+
+assert("Precedence 1", "b and b xor a", "b and (b xor a)");
+assertFalse("Precedence 2", "b and b xor a", "(b and b) xor a");
+
+</script>
+</pre>
+</body>
+</html>
